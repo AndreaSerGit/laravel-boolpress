@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
 
 class PostController extends Controller
 {
@@ -13,7 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+
+        return view("posts.home" , compact('posts')); 
     }
 
     /**
@@ -23,7 +26,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view("posts.create");
     }
 
     /**
@@ -34,7 +37,28 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $request->validate(
+            [
+                'titolo' => 'required|max:30',
+                'testo' => 'required|max:3000',
+                'autore' => 'required|max:30',
+                'foto' => 'required',
+                'data_pubblicazione' => 'required|date'
+
+            ]
+        );
+
+        $post = new Post();
+        $post->titolo = $data['titolo'];
+        $post->testo = $data['testo'];
+        $post->autore = $data['autore'];
+        $post->foto = $data['foto'];
+        $post->data_pubblicazione = $data['data_pubblicazione'];
+        $result = $post->save();
+
+        return redirect()->route('posts.index')->with('message' , 'Il post è stato condiviso');
     }
 
     /**
@@ -45,7 +69,10 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+
+        return view("posts.show" , compact('post'));
     }
 
     /**
@@ -54,9 +81,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view("posts.edit", compact('post'));
     }
 
     /**
@@ -66,9 +93,23 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->all();
+
+        $request->validate(
+            [
+                'titolo' => 'required|max:30',
+                'testo' => 'required|max:3000',
+                'foto' => 'required',
+            ]
+        ); 
+        
+        $post->update($data);
+
+        
+
+        return redirect()->route('posts.index')->with('message' , 'Il post' . " $post->titolo " . 'è stato modificato correttamente');
     }
 
     /**
@@ -77,8 +118,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('message' , 'Il post è stato eliminato');
     }
 }

@@ -13,4 +13,8 @@ class Post extends Model
         'foto',
         'data_pubblicazione',
     ];
+
+    public function infoPost() {
+        return $this->hasOne('App\InfoPost');
+    }
 }
