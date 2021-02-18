@@ -22,6 +22,15 @@
       @endforeach
   </table>
 
+  <ul>
+    @foreach ($post->comments as $comment)
+      <li>
+        <p> {{ $comment->testo }}</p>
+        <p> {{ $comment->autore }}</p>
+      </li>
+    @endforeach
+  </ul>
+
   <a href="{{route('posts.index')}}"> < Torna alla Home</a>   
     
 @endsection
