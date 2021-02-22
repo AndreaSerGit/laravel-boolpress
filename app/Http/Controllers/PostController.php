@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Tag;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -26,7 +28,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("posts.create");
+
+        $tags = Tag::all();
+
+        return view("posts.create" , compact('tags'));
     }
 
     /**
@@ -52,11 +57,16 @@ class PostController extends Controller
 
         $post = new Post();
         $post->titolo = $data['titolo'];
+        $post->slug = Str::slug($post->titolo);
         $post->testo = $data['testo'];
         $post->autore = $data['autore'];
         $post->foto = $data['foto'];
         $post->data_pubblicazione = $data['data_pubblicazione'];
         $result = $post->save();
+        
+        if(!empty($data['tags'])) {
+            $post->tags()->attach($data["tags"]);
+        }
 
         return redirect()->route('posts.index')->with('message' , 'Il post è stato condiviso');
     }
@@ -67,9 +77,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::where('slug', $slug)->first();
 
 
         return view("posts.show" , compact('post'));
@@ -83,7 +93,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view("posts.edit", compact('post'));
+        $tags = Tag::all();
+
+        return view("posts.edit", compact('post' , 'tags'));
     }
 
     /**
@@ -107,7 +119,11 @@ class PostController extends Controller
         
         $post->update($data);
 
-        
+        if(empty($data['tags'])) {
+            $post->tags()->deteach();
+        } else {
+            $post->tags()->sync($data["tags"]);
+        }
 
         return redirect()->route('posts.index')->with('message' , 'Il post' . " $post->titolo " . 'è stato modificato correttamente');
     }

@@ -8,6 +8,7 @@ class Post extends Model
 {
     protected $fillable = [
         'titolo',
+        'slug',
         'testo',
         'autore',
         'foto',
@@ -20,5 +21,9 @@ class Post extends Model
 
     public function comments() {
         return $this->hasMany('App\Comment');
+    }
+
+    public function tags() {
+        return $this->belongsToMany('App\Tag');
     }
 }

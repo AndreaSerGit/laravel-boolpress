@@ -42,6 +42,17 @@
         <label for="data_pubblicazione">Data pubblicazione</label>
         <input type="date" class="form-control" name="data_pubblicazione" id="data_pubblicazione" placeholder="Data pubblicazione">
       </div>
+
+      <h3>Tags</h3>
+      @foreach ($tags as $tag)
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="tags[]" id="tag-{{ $tag->id }}" value="{{ $tag->id }}">
+            <label class="custom-control-label" for="tag-{{ $tag->id }}"> {{ $tag->name }}</label>
+          </div>
+          
+        </div>
+      @endforeach
       <button type='submit' class="btn btn-primary">Invia Post</button>
       <a href="{{route('posts.index')}}"> < Torna alla Home</a>   
   </form>

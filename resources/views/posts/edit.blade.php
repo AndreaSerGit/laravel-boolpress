@@ -34,6 +34,18 @@
         <label for="foto">Foto</label>
         <input type="text" class="form-control" name="foto" id="foto" placeholder="Url" value="{{ $post->foto }}">
       </div>
+      <h3>Tags</h3>
+      @foreach ($tags as $tag)
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" name="tags[]" id="tag-{{ $tag->id }}" value="{{ $tag->id }}"  @if ($post->tags->contains($tag->id)) checked 
+            @endif>
+           
+            <label class="custom-control-label" for="tag-{{ $tag->id }}"> {{ $tag->name }}</label>
+          </div>
+          
+        </div>
+      @endforeach
       <button type='submit' class="btn btn-primary">Modifica Post</button>
       <a href="{{route('posts.index')}}"> < Torna alla Home</a>   
   </form>

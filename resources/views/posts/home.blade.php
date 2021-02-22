@@ -34,7 +34,7 @@
             <td> <img src="{{ $post->foto }}" alt=""> </td>
             <td> {{ $post->data_pubblicazione }} </td>
             <td>
-                <a href=" {{ route('posts.show', $post->id)}} " class="btn btn-outline-dark">MOSTRA</a>
+                <a href=" {{ route('posts.show', $post->slug)}} " class="btn btn-outline-dark">MOSTRA</a>
                 <a href="{{route ("posts.edit" , $post->id ) }}" class="btn btn-outline-dark">Modifica Post</a>
             </td>
             <td>
