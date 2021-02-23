@@ -23,6 +23,9 @@
               @if ($key == 'foto')
                   <img src=" {{ $value }} " alt="">
               @endif
+              @if ($key == 'data_pubblicazione')
+                  {{ Carbon\Carbon::parse($value)->diffForHumans() }}
+              @endif
             </td>
         </tr>         
       @endforeach
@@ -31,8 +34,8 @@
   <ul>
     @foreach ($post->comments as $comment)
       <li>
+        <h6> {{ $comment->autore }} - {{ $comment->created_at->format('l d/m/Y H:i:s') }}</h6>
         <p> {{ $comment->testo }}</p>
-        <p> {{ $comment->autore }}</p>
       </li>
     @endforeach
   </ul>
