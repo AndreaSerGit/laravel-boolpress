@@ -34,6 +34,23 @@
         <label for="foto">Foto</label>
         <input type="text" class="form-control" name="foto" id="foto" placeholder="Url" value="{{ $post->foto }}">
       </div>
+      <div class="form-group">
+        <label for="stato_post">Stato Post</label>
+        <select name="stato_post" class="custom-select my-1 mr-sm-2" id="stato_post">
+          <option value="Bozza">Bozza</option>
+          <option value="Pubblico">Pubblico</option>
+          <option value="Privato">Privato</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="stato_commenti">Sezione commenti</label>
+        <select name="stato_commenti" class="custom-select my-1 mr-sm-2" id="stato_commenti">
+          <option value="Aperto">Aperta</option>
+          <option value="Privato">Privata</option>
+          <option value="Chiuso">Chiusa</option>
+        </select>
+      </div>
       <h3>Tags</h3>
       @foreach ($tags as $tag)
         <div class="form-group">

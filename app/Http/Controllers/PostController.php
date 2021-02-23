@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\InfoPost;
 use App\Tag;
 use Illuminate\Support\Str;
 
@@ -50,19 +51,24 @@ class PostController extends Controller
                 'testo' => 'required|max:3000',
                 'autore' => 'required|max:30',
                 'foto' => 'required',
-                'data_pubblicazione' => 'required|date'
+                'data_pubblicazione' => 'required|date',
+                'stato_post' => 'required',
+                'stato_commenti' => 'required'
 
             ]
         );
 
-        $post = new Post();
-        $post->titolo = $data['titolo'];
+        $post = new Post(); 
         $post->slug = Str::slug($post->titolo);
-        $post->testo = $data['testo'];
-        $post->autore = $data['autore'];
-        $post->foto = $data['foto'];
-        $post->data_pubblicazione = $data['data_pubblicazione'];
-        $result = $post->save();
+        $post->fill($data);
+        $postResult = $post->save();
+
+        
+
+        $data['post_id'] = $post->id;
+        $infoPost = new InfoPost();
+        $infoPost->fill($data);
+        $infoPostResult = $infoPost->save();
         
         if(!empty($data['tags'])) {
             $post->tags()->attach($data["tags"]);
@@ -118,6 +124,10 @@ class PostController extends Controller
         ); 
         
         $post->update($data);
+
+        $infoPost = InfoPost::where('post_id', $post->id)->first();
+        $data['post_id'] = $post->id;
+        $infoPost->update($data);
 
         if(empty($data['tags'])) {
             $post->tags()->deteach();

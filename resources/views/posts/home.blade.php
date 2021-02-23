@@ -20,6 +20,7 @@
             <th>Testo</th>
             <th>Autore</th>
             <th>Foto</th>
+            <th>Stato Post</th>
             <th>Data pubblicazione</th>
             <th><th> <a href="{{route ("posts.create") }}" class="btn btn-outline-dark">Nuovo post</a> </th>
         </tr>
@@ -32,6 +33,7 @@
             <td> {{ $post->testo }} </td>
             <td> {{ $post->autore }} </td>
             <td> <img src="{{ $post->foto }}" alt=""> </td>
+            <td> {{ $post->infoPost->stato_post }} </td>
             <td> {{ $post->data_pubblicazione }} </td>
             <td>
                 <a href=" {{ route('posts.show', $post->slug)}} " class="btn btn-outline-dark">MOSTRA</a>

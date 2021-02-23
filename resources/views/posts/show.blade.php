@@ -14,6 +14,12 @@
             <td><strong>{{ $key }}</strong></td>
             <td>
               {{ $value }}
+              @if ($key == 'testo')
+                 @foreach ($post->tags as $tag)
+                     <span class="badge badge-info"> #{{ $tag->name }} </span>
+                 @endforeach
+                  
+              @endif
               @if ($key == 'foto')
                   <img src=" {{ $value }} " alt="">
               @endif
